@@ -2,6 +2,9 @@ import logo from './logo.svg';
 import './App.css';
 
 function App() {
+
+  //added an comment!
+
   return (
     // added another comment
     <div className="App">
