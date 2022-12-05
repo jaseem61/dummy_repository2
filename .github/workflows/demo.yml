@@ -16,6 +16,8 @@ jobs:
   build:
     needs: test
     runs-on: ubuntu-latest
+    outouts:
+      file-name: ${{steps.publish.outputs.variable}}
     steps:
       - name: Get code
         uses: actions/checkout@v3
@@ -23,11 +25,14 @@ jobs:
         run: npm install
       - name: Build website
         run: npm run build
+      - name: Publish hello world
+        id: publish
+        run: echo 'variable=hello world' >> $GITHUB_OUTPUT
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
-         name: build-files
-         path: build
+          name: build-files
+          path: build
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -38,5 +43,7 @@ jobs:
           name: build-files
       - name: Output contents
         run: ls
+      - name: output hello world
+        run: echo ${{needs.build.outputs.file-name}}
       - name: Deploy
         run: echo "Deploying..."
